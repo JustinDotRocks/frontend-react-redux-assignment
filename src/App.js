@@ -1,7 +1,8 @@
 import React from 'react';
 import { Counter } from './components/counter/Counter';
+import AntDesignCounterClassComponent from './components/counter/AntDesignCounterClassComponent';
+
 import './App.css';
-import AntDesignCounter from './components/counter/AntDesignCounter';
 
 function App() {
 	return (
@@ -9,7 +10,7 @@ function App() {
 			<header className="App-header">
 				{/* <img src={logo} className="App-logo" alt="logo" /> */}
 				<Counter />
-				<AntDesignCounter />
+				<AntDesignCounterClassComponent />
 				{/* <p>
 					Edit <code>src/App.js</code> and save to reload.
 				</p> */}
