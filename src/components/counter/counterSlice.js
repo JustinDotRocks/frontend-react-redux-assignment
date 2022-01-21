@@ -4,6 +4,7 @@ export const slice = createSlice({
 	name: 'counter',
 	initialState: {
 		value: 0,
+		counterHistory: [],
 	},
 	reducers: {
 		increment: state => {
@@ -22,11 +23,20 @@ export const slice = createSlice({
 		resetCount: state => {
 			state.value = 0;
 		},
+		addNewCount: (state, action) => {
+			state.counterHistory = action.payload;
+		},
+		// new reducer that sets state to the new array value
 	},
 });
 
-export const { increment, decrement, incrementByAmount, resetCount } =
-	slice.actions;
+export const {
+	increment,
+	decrement,
+	incrementByAmount,
+	resetCount,
+	addNewCount,
+} = slice.actions;
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This

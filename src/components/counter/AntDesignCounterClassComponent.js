@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { resetCount } from './counterSlice';
-
+import { resetCount, addNewCount } from './counterSlice';
+import uuid from 'uuid';
 import { Card, Button } from 'antd';
 
 const StyledCard = styled(Card)`
@@ -27,6 +27,7 @@ const StyledCounter = styled.div`
 	justify-content: center;
 	font-weight: bold;
 	color: ${props => (props.isOdd ? 'green' : 'purple')};
+	background-color: ${props => (props.isOdd ? 'purple' : 'green')};
 `;
 const StyledResetButton = styled(Button)`
 	width: 7em;
@@ -34,8 +35,52 @@ const StyledResetButton = styled(Button)`
 	font-size: 0.75em;
 	margin-top: 2em;
 `;
+// const CounterHistoryList = styled.div`
+// 	ul {
+// 		li {
+// 			color: rebeccapurple;
+// 			font-size: 0.75em;
+// 		}
+// 	}
+// `;
 
 class AntDesigntCounterClassComponent extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {};
+		console.log(this.state);
+	}
+
+	componentDidMount() {
+		// Call this function so that it fetch first time right after mounting the component
+		this.addCountToCounterHistory();
+		// set Interval
+		this.interval = setInterval(this.addCountToCounterHistory, 2000);
+	}
+
+	componentWillUnmount() {
+		// Clear the interval right before component unmount
+		clearInterval(this.interval);
+	}
+	addCountToCounterHistory = () => {
+		let counterHistory = this.props.counterHistory;
+		if (counterHistory.length >= 9) {
+			counterHistory = counterHistory.slice(1);
+		}
+		let updatedCounterHistory = [
+			...counterHistory,
+			{ currentCounter: this.props.count, key: uuid() },
+		];
+		this.props.addNewCount(updatedCounterHistory);
+		console.log(updatedCounterHistory);
+	};
+
+	renderCounterLog = () => {
+		return this.props.counterHistory.map(item => {
+			return <li key={item.key}>{item.currentCounter}</li>;
+		});
+	};
+
 	render() {
 		return (
 			<div>
@@ -46,6 +91,7 @@ class AntDesigntCounterClassComponent extends Component {
 					<StyledResetButton onClick={() => this.props.resetCount()}>
 						Reset
 					</StyledResetButton>
+					<ul>{this.renderCounterLog()}</ul>
 				</StyledCard>
 			</div>
 		);
@@ -54,9 +100,10 @@ class AntDesigntCounterClassComponent extends Component {
 
 const mapStateToProps = state => ({
 	count: state.counter.value,
+	counterHistory: state.counter.counterHistory,
 });
 
-const mapDispatchToProps = { resetCount };
+const mapDispatchToProps = { resetCount, addNewCount };
 
 export default connect(
 	mapStateToProps,
