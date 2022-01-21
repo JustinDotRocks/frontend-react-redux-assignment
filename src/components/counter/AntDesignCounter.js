@@ -35,6 +35,7 @@ const StyledResetButton = styled(Button)`
 	font-size: 0.75em;
 	margin-top: 2em;
 `;
+// Not a completed function. Went down the path of functional components at first before switching to use Class Components as requested.
 
 const AntDesignCounter = () => {
 	const count = useSelector(selectCount);

@@ -20,13 +20,14 @@ export const slice = createSlice({
 		incrementByAmount: (state, action) => {
 			state.value += action.payload;
 		},
+		// created to update the count back to 0.
 		resetCount: state => {
 			state.value = 0;
 		},
+		// new reducer that sets state to the new array value
 		addNewCount: (state, action) => {
 			state.counterHistory = action.payload;
 		},
-		// new reducer that sets state to the new array value
 	},
 });
 

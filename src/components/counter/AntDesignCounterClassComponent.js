@@ -35,20 +35,11 @@ const StyledResetButton = styled(Button)`
 	font-size: 0.75em;
 	margin-top: 2em;
 `;
-// const CounterHistoryList = styled.div`
-// 	ul {
-// 		li {
-// 			color: rebeccapurple;
-// 			font-size: 0.75em;
-// 		}
-// 	}
-// `;
 
 class AntDesigntCounterClassComponent extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {};
-		console.log(this.state);
 	}
 
 	componentDidMount() {
@@ -62,6 +53,11 @@ class AntDesigntCounterClassComponent extends Component {
 		// Clear the interval right before component unmount
 		clearInterval(this.interval);
 	}
+
+	// Had to set counterHistory to the counterHistory state through the use of the mapStateToProps and then use this.props.
+	// If the currentHistory array is longer than or = to 9 we slice the counter history at the first position to remove it so to only display the last 10 itams.
+	// Because we cant directly manipulate the state in redux we have to spread the initial array counterHistory and add the current counter to the new array.
+	// used the standard package (uuid) for creating keys.
 	addCountToCounterHistory = () => {
 		let counterHistory = this.props.counterHistory;
 		if (counterHistory.length >= 9) {
@@ -72,9 +68,9 @@ class AntDesigntCounterClassComponent extends Component {
 			{ currentCounter: this.props.count, key: uuid() },
 		];
 		this.props.addNewCount(updatedCounterHistory);
-		console.log(updatedCounterHistory);
 	};
 
+	// maps through counterHistory and for each item we return a list item with a key and displays the currentCounter of the current item.
 	renderCounterLog = () => {
 		return this.props.counterHistory.map(item => {
 			return <li key={item.key}>{item.currentCounter}</li>;
@@ -98,11 +94,13 @@ class AntDesigntCounterClassComponent extends Component {
 	}
 }
 
+// map the states to the props so we can access them in the render()
 const mapStateToProps = state => ({
 	count: state.counter.value,
 	counterHistory: state.counter.counterHistory,
 });
 
+// to be able to use the reducer directly in class components you must pass it to props and then use this.props.
 const mapDispatchToProps = { resetCount, addNewCount };
 
 export default connect(
