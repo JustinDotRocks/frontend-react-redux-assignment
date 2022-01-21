@@ -1,8 +1,7 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-// import { useSelector, useDispatch } from 'react-redux';
-import { selectCount, resetCount } from './counterSlice';
+import { resetCount } from './counterSlice';
 
 import { Card, Button } from 'antd';
 
@@ -26,11 +25,9 @@ const StyledCounter = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	color: rebeccapurple;
 	font-weight: bold;
-	/* background-color: #111111; */
+	color: ${props => (props.isOdd ? 'green' : 'purple')};
 `;
-
 const StyledResetButton = styled(Button)`
 	width: 7em;
 	height: 3em;
@@ -39,15 +36,13 @@ const StyledResetButton = styled(Button)`
 `;
 
 class AntDesigntCounterClassComponent extends Component {
-	// constructor(props) {
-	// 	super(props);
-	// 	this.state = { selectCount };
-	// }
 	render() {
 		return (
 			<div>
 				<StyledCard title="Ant Design Counter">
-					<StyledCounter>{this.props.count}</StyledCounter>
+					<StyledCounter isOdd={this.props.count % 2 === 1}>
+						{this.props.count}
+					</StyledCounter>
 					<StyledResetButton onClick={() => this.props.resetCount()}>
 						Reset
 					</StyledResetButton>
@@ -56,6 +51,7 @@ class AntDesigntCounterClassComponent extends Component {
 		);
 	}
 }
+
 const mapStateToProps = state => ({
 	count: state.counter.value,
 });
