@@ -81,7 +81,8 @@ class AntDesigntCounterClassComponent extends Component {
 		return (
 			<div>
 				<StyledCard title="Ant Design Counter">
-					<StyledCounter isOdd={this.props.count % 2 === 1}>
+					<StyledCounter
+						isOdd={this.props.count % 2 === 1 || this.props.count % 2 === -1}>
 						{this.props.count}
 					</StyledCounter>
 					<StyledResetButton onClick={() => this.props.resetCount()}>
